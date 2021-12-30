@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>d72c161303d80643e7819107e0084763.jpg</filename>
+	<path>/mnt/d/OneDrive - Université De Bourgogne/Cours ESIREM/5A - ILC/Systèmes Intelligents Avancés/Brousse/yolov5-master/yolov5-master/datasets/face-mask-dataset-ilc-2021/train/images/d72c161303d80643e7819107e0084763.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>1067</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>with_incorrect_mask</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>538</xmin>
+			<ymin>215</ymin>
+			<xmax>1217</xmax>
+			<ymax>974</ymax>
+		</bndbox>
+	</object>
+</annotation>
