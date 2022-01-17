@@ -1,5 +1,6 @@
 train: datasets/roboflow/train/images
 val: datasets/roboflow/valid/images
+test: datasets/roboflow/test/images
 
 nc: 3
 names: ['with_incorrect_mask', 'with_mask', 'without_mask']

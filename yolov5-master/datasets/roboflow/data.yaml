@@ -1,5 +1,6 @@
 train: ../train/images
 val: ../valid/images
+test: ../test/images
 
 nc: 3
 names: ['with_incorrect_mask', 'with_mask', 'without_mask']
