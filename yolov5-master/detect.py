@@ -55,6 +55,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         hide_labels=False,  # hide labels
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
+        show_fps=True # Show the FPS counter on top left corner of video streaming
         ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -217,14 +218,12 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
             # Print time (inference-only)
-            print(f'{s}Done. ({t3 - t2:.3f}s)')
+            # Compute FPS
+            if (t3 - t2) != 0:
+                framerate = 1.0 / (t3 - t2) 
+            print(f'{s}Done. ({t3 - t2:.3f}s), FPS : {framerate:.2f}')
 
-            # Stream results
-            im0 = annotator.result()
-            if view_img:
-                cv2.imshow(str(p), im0)
-                cv2.waitKey(1)  # 1 millisecond
-
+            
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
@@ -243,6 +242,14 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                             save_path += '.mp4'
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
+            
+            # Stream results
+            im0 = annotator.result()          
+            if view_img:
+                if show_fps:                      
+                    im0 = cv2.putText(im0, f"FPS: {framerate:.2f}", (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)               
+                cv2.imshow(str(p), im0)
+                cv2.waitKey(1)  # 1 millisecond
 
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
@@ -279,6 +286,7 @@ def parse_opt():
     parser.add_argument('--line-thickness', default=3, type=int, help='bounding box thickness (pixels)')
     parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
+    parser.add_argument('--show-fps', default=True, action='store_true', help='show FPS')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
