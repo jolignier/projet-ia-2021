@@ -223,7 +223,14 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                 framerate = 1.0 / (t3 - t2) 
             print(f'{s}Done. ({t3 - t2:.3f}s), FPS : {framerate:.2f}')
 
-            
+            # Stream results
+            im0 = annotator.result()          
+            if view_img:
+                if show_fps:                      
+                    im0 = cv2.putText(im0, f"FPS: {framerate:.2f}", (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)               
+                cv2.imshow(str(p), im0)
+                cv2.waitKey(1)  # 1 millisecond
+
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
@@ -243,13 +250,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
             
-            # Stream results
-            im0 = annotator.result()          
-            if view_img:
-                if show_fps:                      
-                    im0 = cv2.putText(im0, f"FPS: {framerate:.2f}", (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)               
-                cv2.imshow(str(p), im0)
-                cv2.waitKey(1)  # 1 millisecond
+            
 
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
